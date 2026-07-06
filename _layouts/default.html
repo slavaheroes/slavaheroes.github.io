@@ -24,6 +24,6 @@
   {% include close-joke.html %}
   {% include taskbar.html app=page.taskbar_app %}
 
-  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/main.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 </body>
 </html>
