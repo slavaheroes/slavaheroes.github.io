@@ -1,0 +1,22 @@
+<!-- Navigation Tabs -->
+<div class="nav-tabs">
+  {% if include.active == "about" %}
+    <a href="{{ '/' | relative_url }}" class="active">About</a>
+  {% else %}
+    <a href="{{ '/' | relative_url }}">About</a>
+  {% endif %}
+
+  {% if include.active == "blog" %}
+    <a href="{{ '/blog/' | relative_url }}" class="active">Blog</a>
+  {% else %}
+    <a href="{{ '/blog/' | relative_url }}">Blog</a>
+  {% endif %}
+
+  {% if include.active == "post" %}
+    <span class="breadcrumb-sep">▸</span>
+    <span class="breadcrumb-current">this post</span>
+  {% endif %}
+
+
+  <button class="theme-toggle" aria-label="Toggle theme">☾ Dark</button>
+</div>

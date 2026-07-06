@@ -1,0 +1,28 @@
+---
+layout: default
+nav_active: post
+taskbar_app: "blog_post.txt"
+---
+
+{% capture computed_window_title %}blog — {{ page.title }}{% endcapture %}
+{% assign page_window_title = computed_window_title %}
+
+<div class="post-meta">
+  {{ page.date | date: "%b %Y" }}{% if page.description %} · {{ page.description }}{% endif %}
+</div>
+
+<div class="post-content">
+  {{ content }}
+</div>
+
+<div class="post-footer">
+  <span>
+    {% if page.tags.size > 0 %}
+      Tags: {{ page.tags | join: ", " }}
+    {% endif %}
+    {% if page.keywords and page.keywords.size > 0 %}
+      · Keywords: {{ page.keywords | join: ", " }}
+    {% endif %}
+  </span>
+  <a href="{{ '/blog/' | relative_url }}">← back to blog</a>
+</div>

@@ -1,0 +1,9 @@
+<!-- Window Title Bar -->
+<div class="title-bar">
+  <span class="title-bar__label">{% if include.title and include.title != "" %}{{ include.title }}{% elsif page.window_title %}{{ page.window_title }}{% else %}{{ page.title | default: site.title }}{% endif %}</span>
+  <span class="title-bar__controls">
+    <button class="title-bar__btn" id="btn-minimize" aria-label="Minimize">_</button>
+    <button class="title-bar__btn" id="btn-maximize" aria-label="Maximize">□</button>
+    <button class="title-bar__btn" id="btn-close" aria-label="Close">✕</button>
+  </span>
+</div>

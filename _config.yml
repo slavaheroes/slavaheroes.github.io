@@ -1,0 +1,44 @@
+# Site Settings
+title: "Vyacheslav Shen"
+description: "ML Engineer · Building things that see and read"
+author: "Vyacheslav Shen"
+email: "shen9910@gmail.com"
+url: "https://slavaheroes.github.io"
+baseurl: ""
+
+# Build Settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: null
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+
+# Permalink
+permalink: /blog/:year/:title/
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - Dockerfile
+  - docker-compose.yml
+  - README.md
+  - LICENSE
+  - .gitignore
+  - node_modules/
+  - vendor/
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

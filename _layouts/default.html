@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include head.html %}
+</head>
+<body>
+  <div class="desktop">
+    <div class="window" id="main-window">
+      {% include window-chrome.html title=page.window_title %}
+
+      <div class="window-body">
+        {% include nav-tabs.html active=page.nav_active %}
+
+        <div class="content-pane">
+          {{ content }}
+        </div>
+
+        {% include status-bar.html %}
+        {% include badges.html %}
+      </div>
+    </div>
+  </div>
+
+  {% include close-joke.html %}
+  {% include taskbar.html app=page.taskbar_app %}
+
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+</body>
+</html>
