@@ -2,9 +2,9 @@
 title: MLOps Playground
 date: 2022-08-15
 description: MLOps Zoomcamp
-tags: [Projects]
-keywords: [Coding, MLOps]
-featured: false
+tags: [Projects, Courses]
+keywords: [MLOps]
+featured: true
 ---
 
 ## Table of Contents

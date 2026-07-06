@@ -3,8 +3,8 @@ title: Chat with Video - RAG application
 date: 2024-09-15
 description: LLM Zoomcamp 2024
 tags: [Projects]
-keywords: [Coding, RAG, LLMs]
-featured: false
+keywords: [RAG]
+featured: true
 ---
 
 ## Introduction

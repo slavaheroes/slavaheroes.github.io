@@ -25,12 +25,11 @@ docker compose run --service-ports jekyll bundle exec jekyll serve --host 0.0.0.
 
 ```yaml
 ---
-layout: post
 title: "Your Post Title"
 date: 2025-01-15
 description: "A short description"
-tags: [ml, tutorial]
-categories: research
+tags: [Tag One, Tag Two]
+keywords: [Keyword One, Keyword Two]
 featured: true
 ---
 ```

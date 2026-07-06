@@ -4,7 +4,7 @@ title: The Nomads, Ilyas Esenberlin
 date: 2024-06-30
 description: My honest review of the book (in Russian)
 tags: [Reviews, Fiction]
-keywords: [Kazakh Literature, Fiction]
+keywords: [Kazakh Literature]
 featured: true
 ---
 

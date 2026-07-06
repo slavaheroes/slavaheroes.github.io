@@ -61,7 +61,7 @@ Personal portfolio and blog site for Vyacheslav Shen (ML Engineer). Built with *
   ---
   ```
 - `tags` drive the multi-select filter chips on `/blog/` (ANY/ALL match modes)
-- `keywords` drive the POST NETWORK graph on `/blog/`: two posts sharing a keyword
+- `keywords` drive the GRAPH OF THE BLOG on `/blog/`: two posts sharing a keyword
   get an edge, and more shared keywords = a thicker edge. Reuse existing keywords
   where possible so posts connect (check other posts' front matter first)
 - The node color group in the graph comes from a post's **first** tag
@@ -95,10 +95,11 @@ Three cooperating pieces — keep their contracts intact when editing:
 3. **Graph** (`initPostGraph()` in `assets/js/main.js`): parses the JSON blob
    (treat missing `keywords`/`tags` as `[]` — Liquid emits `null`), builds
    edges from pairwise keyword intersection (weight = shared count), lays out
-   each connected component with its own seeded Fruchterman–Reingold pass and
-   fits it into a horizontal slice of the 640×380 virtual canvas (per-component
-   layout is deliberate: a single shared simulation crushes clusters into
-   corners). Listens for `blog:filter` to dim filtered-out nodes. Node color =
+   each connected component with its own seeded Fruchterman–Reingold pass.
+   Component centres are placed along a 2D ellipse around the canvas centre
+   (not horizontal slices) so clusters don't overlap, and a post-placement
+   repulsion pass (MIN_DIST = 55 px) keeps singleton labels from colliding.
+   Listens for `blog:filter` to dim filtered-out nodes. Node color =
    `data-slot` from the post's first tag (`GROUP_SLOTS`: projects→1, reviews→2,
    anything else→3 = neutral gray)
 - The layout is deterministic (fixed seed `20260706`) — same graph every load.

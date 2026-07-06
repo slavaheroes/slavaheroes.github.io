@@ -3,8 +3,8 @@ layout: post
 title: Capstone Project for 5-Day Gen AI Intensive Course
 date: 2025-04-20
 description: RAG & LLM Agents built using LlamaIndex & LangGraph
-tags: [Projects, Agents]
-keywords: [Coding, RAG, GenAI course]
+tags: [Projects, Courses]
+keywords: [RAG, Agents]
 featured: true
 ---
 

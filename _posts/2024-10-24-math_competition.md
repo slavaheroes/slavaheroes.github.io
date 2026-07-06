@@ -2,9 +2,9 @@
 layout: post
 title: LLM Solves Math
 date: 2024-10-24
-description: LLM Zoomcamp 2024 Math Competition
-tags: [Projects, LLMs, Kaggle Competitions]
-keywords: [Coding, LLMs]
+description: LLM Zoomcamp 2024 Math Competition Solution Write-up
+tags: [Projects, Kaggle Competitions]
+keywords: [LLMs]
 featured: true
 ---
 

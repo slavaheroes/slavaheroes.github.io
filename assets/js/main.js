@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* --- Theme Toggle --- */
 function initTheme() {
   let saved = 'light';
-  try { saved = localStorage.getItem('slava-theme') || 'light'; } catch (e) {}
+  try { saved = localStorage.getItem('slava-theme') || 'light'; } catch (e) { }
   applyTheme(saved);
 
   document.querySelectorAll('.theme-toggle').forEach(btn => {
@@ -28,7 +28,7 @@ function initTheme() {
 
 function applyTheme(t) {
   document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('slava-theme', t); } catch (e) {}
+  try { localStorage.setItem('slava-theme', t); } catch (e) { }
   document.querySelectorAll('.theme-toggle').forEach(btn => {
     btn.textContent = t === 'light' ? '☾ Dark' : '☀ Light';
   });
@@ -60,7 +60,7 @@ function initVisitorCounter() {
       sessionStorage.setItem('slava-session-counted', '1');
     }
     el.textContent = String(count).padStart(6, '0');
-  } catch (e) {}
+  } catch (e) { }
 }
 
 /* --- Window Controls --- */
@@ -193,7 +193,7 @@ function initBlogSearch() {
   }
 }
 
-/* --- Post Network Graph --- */
+/* --- Graph of the Blog --- */
 function initPostGraph() {
   const dataEl = document.getElementById('post-graph-data');
   const canvas = document.getElementById('graph-canvas');
@@ -218,7 +218,7 @@ function initPostGraph() {
   // --- Collapse / expand, persisted ---
   if (toggle && body) {
     let open = false;
-    try { open = localStorage.getItem('slava-graph-open') === '1'; } catch (e) {}
+    try { open = localStorage.getItem('slava-graph-open') === '1'; } catch (e) { }
     const arrow = toggle.querySelector('.graph-panel__arrow');
     const hint = toggle.querySelector('.graph-panel__hint');
     function render() {
@@ -229,7 +229,7 @@ function initPostGraph() {
     }
     toggle.addEventListener('click', () => {
       open = !open;
-      try { localStorage.setItem('slava-graph-open', open ? '1' : '0'); } catch (e) {}
+      try { localStorage.setItem('slava-graph-open', open ? '1' : '0'); } catch (e) { }
       render();
     });
     render();
@@ -282,27 +282,48 @@ function initPostGraph() {
   const rng = mulberry32(20260706);
   const pos = new Array(n);
   const usableW = W - 2 * PAD_X, usableH = H - 2 * PAD_Y;
-  let xCursor = PAD_X;
-  components.forEach(idx => {
+
+  // --- 2D elliptical placement of component centers ---
+  // Sort so the largest component is first (already done above).
+  // Place each component's center on an ellipse around the canvas center.
+  // This prevents clusters from overlapping and staggers Y so labels don't
+  // collide horizontally.
+  const C = components.length;
+  const centerX = W / 2, centerY = H / 2;
+  // Radius of the placement ellipse — shrink when few components so nodes
+  // don't hug the edges; grow when many so they don't overlap.
+  const rx = Math.min(usableW * 0.35, usableW * 0.18 * C);
+  const ry = Math.min(usableH * 0.30, usableH * 0.16 * C);
+
+  components.forEach((idx, c) => {
     const cnt = idx.length;
-    const boxW = usableW * cnt / n, boxH = usableH;
-    const bx = xCursor;
-    xCursor += boxW;
+    // Angle on the ellipse (start from top, go clockwise)
+    const angle = (c / C) * 2 * Math.PI - Math.PI / 2;
+    const cx = centerX + rx * Math.cos(angle);
+    const cy = centerY + ry * Math.sin(angle);
+
     if (cnt === 1) {
-      pos[idx[0]] = { x: bx + boxW / 2, y: PAD_Y + boxH / 2 };
+      pos[idx[0]] = { x: cx, y: cy };
       return;
     }
+
+    // Square bounding box sized by node count, capped to avoid overflow
+    const boxSize = Math.min(usableW * 0.45, usableH * 0.55,
+      Math.max(80, 60 * Math.sqrt(cnt)));
+    const boxW = boxSize, boxH = boxSize;
+    const bx = cx - boxW / 2, by = cy - boxH / 2;
+
     const p = idx.map((_, k) => {
-      const angle = (k / cnt) * 2 * Math.PI;
+      const a2 = (k / cnt) * 2 * Math.PI;
       return {
-        x: 100 * Math.cos(angle) + (rng() - 0.5) * 30,
-        y: 100 * Math.sin(angle) + (rng() - 0.5) * 30
+        x: 100 * Math.cos(a2) + (rng() - 0.5) * 30,
+        y: 100 * Math.sin(a2) + (rng() - 0.5) * 30
       };
     });
     const local = new Map(idx.map((gi, k) => [gi, k]));
     const es = edges.filter(e => local.has(e.a) && local.has(e.b))
       .map(e => ({ a: local.get(e.a), b: local.get(e.b), weight: e.weight }));
-    const K = Math.sqrt((boxW * boxH) / cnt);
+    const K = Math.sqrt((boxW * boxH) / cnt) * 1.2; // slightly more repulsion
     const ITER = 250;
     for (let it = 0; it < ITER; it++) {
       const temp = 60 * (1 - it / ITER);
@@ -332,18 +353,44 @@ function initPostGraph() {
         p[i].y += (disp[i].y / d) * step;
       }
     }
-    // fit the settled component into its slice, preserving aspect ratio
+    // Fit the settled component into its bounding box
     const xs = p.map(q => q.x), ys = p.map(q => q.y);
     const minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
     const minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
     const spanX = Math.max(maxX - minX, 1), spanY = Math.max(maxY - minY, 1);
-    const s = Math.min(boxW / spanX, boxH / spanY);
+    const s = Math.min(boxW / spanX, boxH / spanY) * 0.85; // slight padding
     const offX = bx + (boxW - spanX * s) / 2;
-    const offY = PAD_Y + (boxH - spanY * s) / 2;
+    const offY = by + (boxH - spanY * s) / 2;
     idx.forEach((gi, k) => {
       pos[gi] = { x: offX + (p[k].x - minX) * s, y: offY + (p[k].y - minY) * s };
     });
   });
+
+  // --- Post-placement: enforce minimum distance between all nodes ---
+  // Push apart any nodes that ended up too close (e.g. singletons near clusters)
+  const MIN_DIST = 55;
+  for (let pass = 0; pass < 20; pass++) {
+    let moved = false;
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        const dx = pos[i].x - pos[j].x, dy = pos[i].y - pos[j].y;
+        const d = Math.hypot(dx, dy);
+        if (d < MIN_DIST && d > 0.01) {
+          const push = (MIN_DIST - d) / 2 + 1;
+          const nx = (dx / d) * push, ny = (dy / d) * push;
+          pos[i].x += nx; pos[i].y += ny;
+          pos[j].x -= nx; pos[j].y -= ny;
+          moved = true;
+        }
+      }
+    }
+    if (!moved) break;
+  }
+  // Clamp to canvas
+  for (let i = 0; i < n; i++) {
+    pos[i].x = Math.max(PAD_X, Math.min(W - PAD_X, pos[i].x));
+    pos[i].y = Math.max(PAD_Y, Math.min(H - PAD_Y, pos[i].y));
+  }
 
   // --- Color groups: first tag -> palette slot ---
   const GROUP_SLOTS = { projects: 1, reviews: 2 };

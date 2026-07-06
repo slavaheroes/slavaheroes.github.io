@@ -4,7 +4,7 @@ title: Қараш-қараш оқиғасы туралы ой толғау
 date: 2025-06-02
 description: Қараш-қараш оқиғасы не туралы?
 tags: [Reviews, Fiction]
-keywords: [Kazakh Literature, Fiction]
+keywords: [Kazakh Literature]
 featured: true
 ---
 

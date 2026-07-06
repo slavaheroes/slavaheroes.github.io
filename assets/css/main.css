@@ -802,7 +802,7 @@ body {
   scroll-margin-top: 20px;
 }
 
-/* --- Post Network Graph --- */
+/* --- Graph of the Blog --- */
 .graph-panel {
   border: 1px solid var(--bevMid);
   background: var(--paper);
