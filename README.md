@@ -1,35 +1,8 @@
 # slavaheroes.github.io
 
-Personal portfolio and blog for **Vyacheslav Shen** — ML Engineer, brain decoder.
-
-Built with [Jekyll](https://jekyllrb.com/) and styled as a **retro Windows 95 desktop** with light/dark themes, beveled chrome, a taskbar, and a visitor counter.
-
-## ✨ Features
-
-- 🖥️ **Win95 desktop UI** — window chrome, title bars, beveled buttons, teal desktop
-- 🌓 **Light / Dark theme** toggle with localStorage persistence
-- 📝 **Markdown blog** — write posts in markdown, math via KaTeX, syntax highlighting via Rouge
-- 🔍 **Blog search & tag filter** — client-side filtering
-- 🏷️ **Tag chips** — auto-generated from post metadata
-- 📊 **Visitor counter** — retro green-on-black display
-- 🚀 **CI/CD** — automatic deployment via GitHub Actions
-- 🐳 **Docker** — containerized local development
+Personal portfolio and blog built with [Jekyll](https://jekyllrb.com/) and styled as a **retro Windows 95 desktop** with light/dark themes, beveled chrome, a taskbar, and a visitor counter.
 
 ## 🚀 Quick Start
-
-### Prerequisites
-
-- [Ruby](https://www.ruby-lang.org/) 3.0+ and [Bundler](https://bundler.io/), **or**
-- [Docker](https://www.docker.com/) and Docker Compose
-
-### Local Development (Ruby)
-
-```bash
-bundle install
-bundle exec jekyll serve --livereload
-```
-
-Open [http://localhost:4000](http://localhost:4000)
 
 ### Local Development (Docker)
 
@@ -42,7 +15,7 @@ Open [http://localhost:4000](http://localhost:4000)
 ### Preview Drafts
 
 ```bash
-bundle exec jekyll serve --livereload --drafts
+docker compose run --service-ports jekyll bundle exec jekyll serve --host 0.0.0.0 --livereload --drafts
 ```
 
 ## 📝 Writing a Blog Post
